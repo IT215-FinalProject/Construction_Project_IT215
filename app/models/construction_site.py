@@ -8,41 +8,11 @@ from app.db.database import Base
 class ConstructionSite(Base):
     __tablename__ = "construction_sites"
 
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True
-    )
-
-    name = Column(
-        String(150),
-        nullable=False
-    )
-
-    description = Column(
-        Text,
-        nullable=True
-    )
-
-    location = Column(
-        String(255),
-        nullable=True
-    )
-
-    owner_id = Column(
-        Integer,
-        ForeignKey("users.id"),
-        nullable=False
-    )
-
+    id = Column(Integer,primary_key=True,index=True)
+    name = Column(String(150),nullable=False)
+    description = Column(Text,nullable=True)
+    location = Column(String(255),nullable=True)
+    owner_id = Column(Integer,ForeignKey("users.id"),nullable=False)
     owner = relationship("User")
-
-    members = relationship(
-        "SiteMember",
-        back_populates="construction_site"
-    )
-
-    work_items = relationship(
-        "WorkItem",
-        back_populates="construction_site"
-    )
+    members = relationship("SiteMember",back_populates="construction_site")
+    work_items = relationship("WorkItem",back_populates="construction_site")

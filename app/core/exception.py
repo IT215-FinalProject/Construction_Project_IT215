@@ -18,7 +18,7 @@ async def not_found_handler(
 ):
     return JSONResponse(
         status_code=404,
-        content={
+        details={
             "status_code": 404,
             "message": exc.message,
             "data": None,
@@ -33,7 +33,7 @@ async def bad_request_handler(
 ):
     return JSONResponse(
         status_code=400,
-        content={
+        details={
             "status_code": 400,
             "message": exc.message,
             "data": None,

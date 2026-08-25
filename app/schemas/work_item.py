@@ -1,12 +1,13 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
-# Schema dùng cho hạng mục thi công
 class WorkItemBase(BaseModel):
     title: str
     description: str | None = None
     status: str = "TODO"
     priority: str = "MEDIUM"
+    due_date: datetime | None = None
 
 
 class WorkItemCreate(WorkItemBase):
@@ -19,6 +20,7 @@ class WorkItemUpdate(BaseModel):
     description: str | None = None
     status: str | None = None
     priority: str | None = None
+    due_date: datetime | None = None
     assignee_id: int | None = None
 
 

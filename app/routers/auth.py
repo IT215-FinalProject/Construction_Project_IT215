@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.database import get_db
 from app.schemas.user import UserRegister, UserLogin
-from app.services.user_service import register_user, login_user
+from app.services.user_service import (register_user,login_user)
 from app.core.security import create_token
 
 
@@ -19,12 +19,7 @@ def register(
     data: UserRegister,
     db: Session = Depends(get_db)
 ):
-    user = register_user(
-        db,
-        data.username,
-        data.email,
-        data.password
-    )
+    user = register_user(db,data.email,data.password,data.full_name)
 
     return {
         "message": "Đăng ký thành công",

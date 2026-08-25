@@ -1,15 +1,17 @@
 from pydantic import BaseModel
 
 
-# Schema dùng cho thành viên công trình
+# Schema thêm member
 class SiteMemberCreate(BaseModel):
     user_id: int
-    construction_site_id: int
-    role: str = "MEMBER"
 
 
-class SiteMemberResponse(SiteMemberCreate):
+# Schema trả member
+class SiteMemberResponse(BaseModel):
     id: int
+    user_id: int
+    construction_site_id: int
+    role: str
 
     class Config:
         from_attributes = True

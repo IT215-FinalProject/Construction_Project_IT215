@@ -5,11 +5,9 @@ from app.core.security import hash_password, verify_password
 
 
 # Đăng ký
-def register_user(db, username, email, password):
+def register_user(db,email,password,full_name):
 
-    user = db.query(User).filter(
-        User.email == email
-    ).first()
+    user = db.query(User).filter(User.email == email).first()
 
     if user:
         raise HTTPException(
@@ -18,9 +16,9 @@ def register_user(db, username, email, password):
         )
 
     user = User(
-        username=username,
         email=email,
         password=hash_password(password),
+        full_name=full_name,
         role="USER",
         is_active=True
     )
@@ -35,9 +33,7 @@ def register_user(db, username, email, password):
 # Đăng nhập
 def login_user(db, email, password):
 
-    user = db.query(User).filter(
-        User.email == email
-    ).first()
+    user = db.query(User).filter(User.email == email).first()
 
     if not user:
         raise HTTPException(
@@ -52,6 +48,12 @@ def login_user(db, email, password):
         raise HTTPException(
             status_code=401,
             detail="Email hoặc password sai"
+        )
+
+    if not user.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="Tài khoản không hoạt động"
         )
 
     return user

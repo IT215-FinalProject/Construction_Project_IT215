@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.user import User
 from app.schemas.user import UserResponse
-from app.core.dependencies import get_current_user, admin_required
+
+from app.dependencies.dependencies import (get_current_user,admin_required)
 
 
 router = APIRouter(
@@ -15,9 +16,7 @@ router = APIRouter(
 
 # Xem thông tin bản thân
 @router.get("/me", response_model=UserResponse)
-def get_me(
-    user: User = Depends(get_current_user)
-):
+def get_me(user: User = Depends(get_current_user)):
     return user
 
 
@@ -33,13 +32,11 @@ def get_users(
 
     if search:
         query = query.filter(
-            (User.username.contains(search)) |
+            (User.full_name.contains(search)) |
             (User.email.contains(search))
         )
 
     if is_active is not None:
-        query = query.filter(
-            User.is_active == is_active
-        )
+        query = query.filter(User.is_active == is_active)
 
     return query.all()

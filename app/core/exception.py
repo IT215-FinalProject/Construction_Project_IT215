@@ -1,4 +1,5 @@
 from fastapi import Request, HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 
@@ -11,3 +12,16 @@ def http_exception_handler(request: Request, exc: HTTPException):
             "message": exc.detail
         }
     )
+
+
+# Xử lý lỗi validate dữ liệu
+def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=422,
+        content={
+            "status_code": 422,
+            "message": "Dữ liệu không hợp lệ"
+        }
+    )
+
+

@@ -1,49 +1,23 @@
 from pydantic import BaseModel, EmailStr
 
 
-# Schema dùng cho User
-class UserBase(BaseModel):
-    username: str
-    email: EmailStr
-
-
-class UserCreate(UserBase):
-    password: str
-
-
-class UserUpdate(BaseModel):
-    username: str | None = None
-    email: EmailStr | None = None
-    password: str | None = None
-
-
-class UserResponse(UserBase):
-    id: int
-    role: str
-    is_active: bool
-
-    class Config:
-        from_attributes = True
-
-
-# Đăng ký
+# Schema đăng ký
 class UserRegister(BaseModel):
-    username: str
-    email: str
+    email: EmailStr
     password: str
+    full_name: str
 
 
-# Đăng nhập
+# Schema đăng nhập
 class UserLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
-# Trả thông tin User
+# Schema trả thông tin User
 class UserResponse(BaseModel):
     id: int
-    username: str
-    email: str
+    email: EmailStr
     role: str
     is_active: bool
 

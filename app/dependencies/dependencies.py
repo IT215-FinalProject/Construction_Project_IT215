@@ -26,22 +26,26 @@ def get_current_user(
             algorithms=["HS256"]
         )
 
-        user_id = data["sub"]
+        user_id = int(data["sub"])
 
     except:
         raise HTTPException(
             status_code=401,
-            detail="Token không hợp lệ"
+            detail="Token không hợp lệ hoặc đã hết hạn"
         )
 
-    user = db.query(User).filter(
-        User.id == int(user_id)
-    ).first()
+    user = db.query(User).filter(User.id == user_id).first()
 
     if not user:
         raise HTTPException(
             status_code=404,
             detail="User không tồn tại"
+        )
+
+    if not user.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="Tài khoản không hoạt động"
         )
 
     return user
@@ -60,7 +64,7 @@ class RoleChecker:
         if user.role != self.role:
             raise HTTPException(
                 status_code=403,
-                detail="Không có quyền"
+                detail="Không có quyền admin"
             )
 
         return user
